@@ -7,21 +7,24 @@
         <h1>Backbone is here</h1>
         <a href="#" onclick="item.doSomething()" >do something</a>
         <!-- the only dependencies of backbone is underscore -->
+        <script src="jquery-1.8.2.min.js"></script>
         <script src="underscore-min.js"></script>
         <script src="backbone-min.js"></script>
         <script>
-        var Item = Backbone.Model.extend({
-            initialize: function() {
-                this.on("change:sex", function() {
-                    alert("miao");
-                });
-            },
-            doSomething: function() {
-                this.set({sex: "male"});
-            }
+        $(function() {
+            var Item = Backbone.Model.extend({
+                initialize: function() {
+                    this.on("change:sex", function() {
+                        alert("miao");
+                    });
+                },
+                doSomething: function() {
+                    this.set({sex: "male"});
+                }
+            });
+            var item = new Item;
         });
 
-        var item = new Item;
         </script>
     </body>
 </html>
