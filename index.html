@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <body>
+    <script>
+    </script>
+        <h1>Backbone is here</h1>
+        <a href="#" onclick="item.doSomething()" >do something</a>
+        <!-- the only dependencies of backbone is underscore -->
+        <script src="underscore-min.js"></script>
+        <script src="backbone-min.js"></script>
+        <script>
+        var Item = Backbone.Model.extend({
+            doSomething: function() {
+                this.set({sex: "male"});
+            }
+        });
+
+        var item = new Item;
+
+        item.on("change:sex", function() {
+            alert("miao");
+        })
+        </script>
+    </body>
+</html>
