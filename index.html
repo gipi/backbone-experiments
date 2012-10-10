@@ -5,7 +5,8 @@
     <script>
     </script>
         <h1>Backbone is here</h1>
-        <a href="#" onclick="item.doSomething()" >do something</a>
+        <a href="#dir/cats">do something</a>
+        <a href="#dir/dogs" >do something other</a>
         <!-- the only dependencies of backbone is underscore -->
         <script src="jquery-1.8.2.min.js"></script>
         <script src="underscore-min.js"></script>
@@ -22,6 +23,19 @@
                     this.set({sex: "male"});
                 }
             });
+
+            var myRouter = Backbone.Router.extend({
+                routes: {
+                    "dir/:name": "doRoute"
+                },
+                doRoute: function(name) {
+                    alert(name);
+                }
+            });
+            var router = new myRouter();
+            // must be called this below in order to make the router works
+            Backbone.history.start();
+
             var item = new Item;
         });
 
