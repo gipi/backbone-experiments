@@ -9,22 +9,24 @@
         <script src="static/backbone-min.js"></script>
         <script>
         $(function() {
-            var Item = Backbone.Model.extend({
-                urlRoot: 'http://localhost:5000/item',
+            var Post = Backbone.Model.extend({
+                urlRoot: '/item',
                 defaults: {
                     title: 'not yet ready',
                     text:  '...'
                 },
-                initialize: function() {
-                }
+            });
 
+            var Posts = Backbone.Collection.extend({
+                model: Post,
+                url: '/posts',
             });
 
             // model is an attribute automatically created
             // when new View({model: todo}) is executed
-            var View = Backbone.View.extend({
-                el: $('#blog'),// attach to #blog this rendered view
-                template: _.template($('#item-template').html()),
+            var PostView = Backbone.View.extend({
+                tagName: 'article',// root DOM element created to contain the view itself
+                template: _.template($('#post-template').html()),
 
                 initialize: function() {
                     this.render();
@@ -34,13 +36,37 @@
                 render: function() {
                     this.$el.html(this.template(this.model.toJSON()));
 
+                    // if we return "this" we can do chaining
                     return this;
                 }
             });
 
-            var item = new Item;
-            item.fetch();
-            var view = new View({model: item});
+            var BlogAppView = Backbone.View.extend({
+                el: $('#blog'),// attach to #blog this rendered view
+                template: _.template($('#app-template').html()),
+                initialize: function() {
+                    this.render();
+                    /*
+                     * from the documentation:
+                     *
+                     *  When the model data returns from the server, the collection will reset.
+                     */
+                    this.model.bind('reset', this.addAll, this);
+                    this.model.fetch();
+                },
+                addOne: function(post) {
+                    var view = new PostView({model: post});
+                    this.$('#posts').append(view.render().el);
+                },
+                addAll: function() {
+                    this.model.each(this.addOne);
+                },
+                render: function() {
+                    this.$el.html(this.template());
+
+                    return this;
+                }
+            });
 
             var myRouter = Backbone.Router.extend({
                 routes: {
@@ -54,13 +80,24 @@
             // must be called this below in order to make the router works
             Backbone.history.start();
 
+            var posts = new Posts();
+
+            var blogAppView = new BlogAppView({model: posts});
+
         });
 
         </script>
   <!-- Templates -->
 
   <!-- 'text' variable is printes as is, not HTML escaped -->
-  <script type="text/template" id="item-template">
+  <script type="text/template" id="app-template">
+    <section>
+        <h1>Blog posts you are waiting for</h1>
+        <section id="posts">
+        </section>
+    </section>
+  </script>
+  <script type="text/template" id="post-template">
     <h1><%- title %></h1>
     <article><%= text %></article>
   </script>

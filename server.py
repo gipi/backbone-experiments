@@ -14,9 +14,9 @@ def home():
     filename = 'index.html'
     return render_template(filename)
 
-@app.route('/item')
+@app.route('/posts')
 def json():
-    return simplejson.dumps({
+    first_post = {
         'title': 'the best post ever',
         'text': publish_parts('''Lòrem ípsum dolór sit ámet, éa dicàt elaboraret vim, mea ád quaeque vocibùs blandít. In aequé nominavi luptatum vél. Ex quando doctùs disputàndo vìs. Ad aliquíp propríae vim, his scripta sèntentiae no. Mel eu ìnani integre disputationi.
 
@@ -37,7 +37,12 @@ Prì labitur féugait nè. Cu laboramus nécessitatibùs sít. Nec id facilisis 
 Lègimús vivendo principes vim te, hinc rébum út has, làbòre deléniti periculis no qui. Nec tota vóluptua pertinax ne, òdíò nìsl múndi ùsù no. Tàntàs mòlèstìae similique nec at, ad quó ípsum bonórum rationìbus, cum eì fugit senténtìàe. Eú úsu próbo urbanitás, ìus scrìpta delenitì ratiònibús an, in partém ridens meliore mèl. Pro nulla vocibus cu, facér latìne inimìcus èt vim, nèmore nomìnavi est ne. Id solét fuìsset mel, án dùò probo vèniam, unum omnés dèlicátissimi éx prò.
 
 Ad pèr liber scripta volutpat, èx pro níbh accòmmòdárè. Sadipscing sùscipiantur sed ìd, quo nó alia òmnium scriptórèm, víx quaèqùe mnesarchum ei. Èum ùt malórùm ancillaè. Eì meis sempèr has. Rébum perpetua malùissét vel an. In illud nihil hónestàtis méi, no altera invidunt pri. Nihil tation quidam pér in, clíta cetéròs nec cu.''', writer_name='html')['html_body']
-    })
+    }
+    second_post = {
+        'title': 'programming is fascinating',
+        'text': '<a href="http://google.com">link</a> is the way'
+    }
+    return simplejson.dumps((first_post, second_post,))
 
 if __name__ == '__main__':
     app.run(debug=True)
